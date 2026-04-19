@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { FiHome, FiLayers, FiPlusCircle, FiPieChart, FiCalendar, FiTrendingUp, FiTarget, FiMessageCircle, FiSettings, FiLogOut, FiBell, FiMenu, FiTrash2, FiBarChart2, FiUsers, FiLock } from "react-icons/fi";
+import { FiHome, FiLayers, FiPlusCircle, FiPieChart, FiCalendar, FiTrendingUp, FiTarget, FiMessageCircle, FiSettings, FiLogOut, FiBell, FiMenu, FiTrash2, FiBarChart2, FiUsers, FiLock, FiAlertTriangle } from "react-icons/fi";
 import StudentAnalysisModal from "../components/StudentAnalysisModal";
 
 function Faculty() {
@@ -46,7 +46,8 @@ function Faculty() {
     currentPassword: "",
     newPassword: "",
     confirmPassword: "",
-    notificationsEnabled: true
+    enableNotifications: true,
+    enableAnnouncements: true
   });
 
   const [materialForm, setMaterialForm] = useState({
@@ -1454,43 +1455,42 @@ function Faculty() {
 
   const renderSettings = () => {
     return (
-      <div className="view-content fade-in">
-        <div className="view-header">
-          <h2 className="view-title">Settings</h2>
-          <p className="view-subtitle">Manage your account preferences and security</p>
+      <div style={{ padding: '24px', maxWidth: '1000px', margin: '0 auto' }}>
+        <div className="admin-header" style={{ marginBottom: '32px' }}>
+          <div>
+            <h2 style={{ fontSize: '28px', color: '#111827', fontWeight: 700 }}>Settings</h2>
+            <p className="admin-header-desc" style={{ fontSize: '16px', color: '#6B7280' }}>Manage your account and system preferences</p>
+          </div>
         </div>
 
-        <div className="metrics-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '24px' }}>
-          
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px' }}>
           {/* Profile Settings */}
-          <div className="metric-card" style={{ padding: '24px' }}>
+          <div style={{ backgroundColor: 'white', padding: '28px', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)', border: '1px solid #F3F4F6' }}>
             <h3 style={{ fontSize: '18px', fontWeight: 600, color: '#111827', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <FiUsers style={{ color: '#3B82F6' }} /> Profile Settings
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div className="form-group">
-                <label className="form-label" style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: 500, color: '#374151' }}>Full Name</label>
-                <input 
-                  type="text" 
-                  className="form-control"
-                  style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #D1D5DB' }}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={{ fontSize: '14px', fontWeight: 500, color: '#374151' }}>Faculty Name</label>
+                <input
+                  type="text"
                   value={settingsForm.name}
-                  onChange={(e) => setSettingsForm({...settingsForm, name: e.target.value})}
+                  onChange={(e) => setSettingsForm({ ...settingsForm, name: e.target.value })}
+                  style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '14px' }}
                 />
               </div>
-              <div className="form-group">
-                <label className="form-label" style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: 500, color: '#374151' }}>Email Address</label>
-                <input 
-                  type="email" 
-                  className="form-control"
-                  style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #D1D5DB' }}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={{ fontSize: '14px', fontWeight: 500, color: '#374151' }}>Email Address</label>
+                <input
+                  type="email"
                   value={settingsForm.email}
-                  onChange={(e) => setSettingsForm({...settingsForm, email: e.target.value})}
+                  onChange={(e) => setSettingsForm({ ...settingsForm, email: e.target.value })}
+                  style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '14px' }}
                 />
               </div>
-              <button 
-                className="admin-btn-primary" 
-                style={{ marginTop: '8px', width: 'fit-content' }}
+              <button
+                className="admin-btn-primary"
+                style={{ marginTop: '8px', width: 'fit-content', padding: '10px 24px' }}
                 onClick={() => triggerToast("Profile updated successfully!", "success")}
               >
                 Save Changes
@@ -1498,82 +1498,107 @@ function Faculty() {
             </div>
           </div>
 
-          {/* Change Password */}
-          <div className="metric-card" style={{ padding: '24px' }}>
+          {/* Security */}
+          <div style={{ backgroundColor: 'white', padding: '28px', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)', border: '1px solid #F3F4F6' }}>
             <h3 style={{ fontSize: '18px', fontWeight: 600, color: '#111827', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <FiLock style={{ color: '#F59E0B' }} /> Security
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <input 
-                type="password" 
-                className="form-control"
-                placeholder="Current Password"
-                style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #D1D5DB' }}
-                value={settingsForm.currentPassword}
-                onChange={(e) => setSettingsForm({...settingsForm, currentPassword: e.target.value})}
-              />
-              <input 
-                type="password" 
-                className="form-control"
-                placeholder="New Password"
-                style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #D1D5DB' }}
-                value={settingsForm.newPassword}
-                onChange={(e) => setSettingsForm({...settingsForm, newPassword: e.target.value})}
-              />
-              <input 
-                type="password" 
-                className="form-control"
-                placeholder="Confirm New Password"
-                style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #D1D5DB' }}
-                value={settingsForm.confirmPassword}
-                onChange={(e) => setSettingsForm({...settingsForm, confirmPassword: e.target.value})}
-              />
-              <button 
-                className="admin-btn-primary" 
-                style={{ marginTop: '8px', width: 'fit-content', backgroundColor: '#F59E0B', border: 'none' }}
-                onClick={() => triggerToast("Password updated successfully!", "success")}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <input
+                  type="password"
+                  placeholder="Current Password"
+                  value={settingsForm.currentPassword}
+                  onChange={(e) => setSettingsForm({ ...settingsForm, currentPassword: e.target.value })}
+                  style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '14px' }}
+                />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <input
+                  type="password"
+                  placeholder="New Password"
+                  value={settingsForm.newPassword}
+                  onChange={(e) => setSettingsForm({ ...settingsForm, newPassword: e.target.value })}
+                  style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '14px' }}
+                />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <input
+                  type="password"
+                  placeholder="Confirm New Password"
+                  value={settingsForm.confirmPassword}
+                  onChange={(e) => setSettingsForm({ ...settingsForm, confirmPassword: e.target.value })}
+                  style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '14px' }}
+                />
+              </div>
+              <button
+                className="admin-btn-primary"
+                style={{ marginTop: '8px', width: 'fit-content', padding: '10px 24px', backgroundColor: '#F59E0B' }}
+                onClick={() => triggerToast("Password updated securely!", "success")}
               >
                 Update Password
               </button>
             </div>
           </div>
 
-          {/* Notifications & Account */}
-          <div className="metric-card" style={{ padding: '24px' }}>
+          {/* Notifications */}
+          <div style={{ backgroundColor: 'white', padding: '28px', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)', border: '1px solid #F3F4F6' }}>
             <h3 style={{ fontSize: '18px', fontWeight: 600, color: '#111827', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <FiBell style={{ color: '#8B5CF6' }} /> Preferences
+              <FiBell style={{ color: '#8B5CF6' }} /> Notifications
             </h3>
-            
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '32px', padding: '12px', backgroundColor: '#F9FAFB', borderRadius: '12px' }}>
-              <div>
-                <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: '#374151' }}>Enable Notifications</h4>
-                <p style={{ margin: 0, fontSize: '13px', color: '#6B7280' }}>Real-time alerts for student activity.</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div>
+                  <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: '#374151' }}>Enable Notifications</h4>
+                  <p style={{ margin: 0, fontSize: '13px', color: '#6B7280' }}>Receive alerts for student activity.</p>
+                </div>
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    checked={settingsForm.enableNotifications}
+                    onChange={(e) => setSettingsForm({ ...settingsForm, enableNotifications: e.target.checked })}
+                  />
+                  <span className="slider round"></span>
+                </label>
               </div>
-              <label className="switch">
-                <input 
-                  type="checkbox" 
-                  checked={settingsForm.notificationsEnabled}
-                  onChange={(e) => setSettingsForm({...settingsForm, notificationsEnabled: e.target.checked})}
-                />
-                <span className="slider round"></span>
-              </label>
-            </div>
-
-            <div style={{ borderTop: '1px solid #F3F4F6', paddingTop: '20px' }}>
-              <h3 style={{ fontSize: '16px', fontWeight: 600, color: '#EF4444', marginBottom: '16px' }}>Account Actions</h3>
-              <button 
-                className="topbar-logout-btn" 
-                style={{ width: '100%', padding: '12px', justifyContent: 'center', backgroundColor: '#FEF2F2', color: '#EF4444' }}
-                onClick={handleLogout}
-              >
-                <FiLogOut style={{ marginRight: '8px' }} /> Logout from Account
-              </button>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div>
+                  <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: '#374151' }}>Enable Announcements</h4>
+                  <p style={{ margin: 0, fontSize: '13px', color: '#6B7280' }}>Receive alerts when global announcements are posted.</p>
+                </div>
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    checked={settingsForm.enableAnnouncements}
+                    onChange={(e) => setSettingsForm({ ...settingsForm, enableAnnouncements: e.target.checked })}
+                  />
+                  <span className="slider round"></span>
+                </label>
+              </div>
             </div>
           </div>
 
+          {/* Account Actions */}
+          <div style={{ backgroundColor: '#FFF5F5', padding: '28px', borderRadius: '16px', border: '1px solid #FEB2B2' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: 600, color: '#C53030', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <FiAlertTriangle /> Account Actions
+            </h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div>
+                <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: '#742A2A' }}>Terminate Session</h4>
+                <p style={{ margin: 0, fontSize: '13px', color: '#9B2C2C', marginBottom: '12px' }}>Securely log out of the faculty portal.</p>
+                <button
+                  onClick={handleLogout}
+                  style={{ width: '100%', padding: '10px 24px', borderRadius: '8px', backgroundColor: 'white', border: '1px solid #D1D5DB', color: '#374151', fontWeight: 600, cursor: 'pointer' }}
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* CSS for Toggle Switch */}
+        {/* TOGGLE SWITCH STYLES */}
         <style>{`
           .switch {
             position: relative;
@@ -1594,6 +1619,7 @@ function Faculty() {
             right: 0;
             bottom: 0;
             background-color: #D1D5DB;
+            -webkit-transition: .4s;
             transition: .4s;
           }
           .slider:before {
@@ -1604,12 +1630,18 @@ function Faculty() {
             left: 3px;
             bottom: 3px;
             background-color: white;
+            -webkit-transition: .4s;
             transition: .4s;
           }
           input:checked + .slider {
             background-color: #3B82F6;
           }
+          input:focus + .slider {
+            box-shadow: 0 0 1px #3B82F6;
+          }
           input:checked + .slider:before {
+            -webkit-transform: translateX(20px);
+            -ms-transform: translateX(20px);
             transform: translateX(20px);
           }
           .slider.round {
