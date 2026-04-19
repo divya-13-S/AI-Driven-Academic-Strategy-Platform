@@ -8,7 +8,7 @@ import FacultyMaterials from "./pages/FacultyMaterials.jsx";
 import Admin from "./pages/Admin.jsx";
 import Subjectdetails from "./pages/Subjectdetails.jsx";
 import Signup from "./pages/Signup.jsx";
-import Feedback from "./Pages/Feedback.jsx";
+import Feedback from "./pages/Feedback.jsx";
 import AdminFeedback from "./pages/Adminfeedback.jsx";
 import AISuggestionsPage from "./pages/AISuggestionsPage.jsx";
 
