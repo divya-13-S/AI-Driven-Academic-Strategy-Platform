@@ -83,9 +83,9 @@ function AISuggestionsPage() {
       const userId = localStorage.getItem("userId");
       try {
         const [marksRes, compRes, examRes] = await Promise.all([
-          fetch(`http://localhost:8080/subject/${userId}`),
-          fetch(`http://localhost:8080/completion/${userId}`),
-          fetch(`http://localhost:8080/exam-schedule/student/${userId}`).catch(() => ({ ok: false }))
+          fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/subject/${userId}`),
+          fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/completion/${userId}`),
+          fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/exam-schedule/student/${userId}`).catch(() => ({ ok: false }))
         ]);
 
         const marksData = marksRes.ok ? await marksRes.json() : [];

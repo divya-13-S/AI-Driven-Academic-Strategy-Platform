@@ -87,7 +87,7 @@ function Faculty() {
     const fetchStudents = async () => {
       if (!subject) return;
       try {
-        const res = await fetch(`http://localhost:8080/faculty/students/${subject}`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/faculty/students/${subject}`);
         const data = await res.json();
         if (Array.isArray(data)) setStudents(data);
       } catch (err) {
@@ -101,7 +101,7 @@ function Faculty() {
     const fetchTopics = async () => {
       if (!subject) return;
       try {
-        const res = await fetch(`http://localhost:8080/topics/${subject}`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/topics/${subject}`);
         const data = await res.json();
         setAvailableTopics(sortTopics(data.topics || []));
       } catch (err) {
@@ -116,7 +116,7 @@ function Faculty() {
   const fetchMaterials = async () => {
     if (!subject) return;
     try {
-      const res = await fetch(`http://localhost:8080/materials/subject/${subject}`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/materials/subject/${subject}`);
       if (res.ok) {
         const data = await res.json();
         setMaterials(data || []);
@@ -135,12 +135,12 @@ function Faculty() {
   const fetchScheduledExams = async () => {
     if (!subject) return;
     try {
-      const res = await fetch(`http://localhost:8080/exam-schedule/${encodeURIComponent(subject)}`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/exam-schedule/${encodeURIComponent(subject)}`);
       if (res.ok) {
         setScheduledExams(await res.json());
       }
       
-      const allRes = await fetch(`http://localhost:8080/exams`);
+      const allRes = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/exams`);
       if (allRes.ok) {
         setAllScheduledExams(await allRes.json());
       }
@@ -158,7 +158,7 @@ function Faculty() {
   useEffect(() => {
     const fetchAnnouncements = async () => {
       try {
-        const res = await fetch("http://localhost:8080/announcements?target=faculty");
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/announcements?target=faculty`);
         if (res.ok) setAnnouncements(await res.json());
       } catch (err) {
         console.log(err);
@@ -169,7 +169,7 @@ function Faculty() {
 
   const fetchGlobalSubjects = async () => {
     try {
-      const res = await fetch("http://localhost:8080/admin/subjects-overview");
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/admin/subjects-overview`);
       if (res.ok) {
         setGlobalSubjects(await res.json());
       }
@@ -181,7 +181,7 @@ function Faculty() {
   const fetchProgressData = async () => {
     if (!selectedProgressSubject) return;
     try {
-      const res = await fetch(`http://localhost:8080/faculty/student-progress/${selectedProgressSubject}`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/faculty/student-progress/${selectedProgressSubject}`);
       if (res.ok) {
         setProgressData(await res.json());
       }
@@ -203,7 +203,7 @@ function Faculty() {
   useEffect(() => {
     const fetchTotalStudents = async () => {
       try {
-        const res = await fetch("http://localhost:8080/students/count");
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/students/count`);
         const data = await res.json();
         if (data && typeof data.count === 'number') setTotalStudentCount(data.count);
       } catch (err) {
@@ -256,7 +256,7 @@ function Faculty() {
     }
 
     try {
-      const response = await fetch("http://localhost:8080/topics", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/topics`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -269,7 +269,7 @@ function Faculty() {
         triggerToast("Unit added successfully!");
         setNewTopicForm({ topicName: "" });
         setShowAddTopicModal(false);
-        const topicsRes = await fetch(`http://localhost:8080/topics/${subject}`);
+        const topicsRes = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/topics/${subject}`);
         const topicsData = await topicsRes.json();
         setAvailableTopics(sortTopics(topicsData.topics || []));
       }
@@ -280,7 +280,7 @@ function Faculty() {
 
   const handleDeleteUnit = async (unitName) => {
     try {
-      const res = await fetch(`http://localhost:8080/admin/units/delete-unit`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/admin/units/delete-unit`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ subjectName: subject, unitName })
@@ -303,7 +303,7 @@ function Faculty() {
   const handleAddMaterial = async () => {
     if (!materialForm.topic || !materialForm.content) return;
     try {
-      const response = await fetch("http://localhost:8080/materials", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/materials`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -327,7 +327,7 @@ function Faculty() {
   const handleDeleteMaterial = async (id) => {
     if (!window.confirm("Delete this material?")) return;
     try {
-      const res = await fetch(`http://localhost:8080/materials/${id}`, { method: "DELETE" });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/materials/${id}`, { method: "DELETE" });
       if (res.ok) {
         triggerToast("Material deleted");
         fetchMaterials();
@@ -358,7 +358,7 @@ function Faculty() {
     }
     
     try {
-      const res = await fetch("http://localhost:8080/exam-schedule", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/exam-schedule`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -385,7 +385,7 @@ function Faculty() {
   const handleDeleteExam = async (id) => {
     if(!window.confirm("Are you sure you want to delete this scheduled exam?")) return;
     try {
-      const res = await fetch(`http://localhost:8080/exam-schedule/${id}`, { method: "DELETE" });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/exam-schedule/${id}`, { method: "DELETE" });
       if (res.ok) {
         triggerToast("Exam deleted successfully", "success");
         fetchScheduledExams();
@@ -399,11 +399,11 @@ function Faculty() {
   const fetchAllMarksForSubject = async () => {
     if (!subject) return;
     try {
-      const res = await fetch(`http://localhost:8080/faculty/students/${encodeURIComponent(subject)}`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/faculty/students/${encodeURIComponent(subject)}`);
       const data = res.ok ? await res.json() : [];
       setAllSubjectMarks(data);
 
-      const sRes = await fetch("http://localhost:8080/students/all");
+      const sRes = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/students/all`);
       if (sRes.ok) {
         const sData = await sRes.json();
         const map = {};
@@ -437,9 +437,9 @@ function Faculty() {
     const unitString = [...marksUnit].sort().join(", ");
     setLoadingMarks(true);
     try {
-      const studentsRes = await fetch("http://localhost:8080/students/all");
+      const studentsRes = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/students/all`);
       const studentsData = await studentsRes.json();
-      const marksRes = await fetch(`http://localhost:8080/faculty/students/${encodeURIComponent(subject)}`);
+      const marksRes = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/faculty/students/${encodeURIComponent(subject)}`);
       const existingMarks = await marksRes.json();
 
       const studentsWithMarks = studentsData.map(student => {
@@ -492,7 +492,7 @@ function Faculty() {
       }
     }
     try {
-      const res = await fetch("http://localhost:8080/students/marks", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/students/marks`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -1316,7 +1316,7 @@ function Faculty() {
 
   const fetchFeedback = async () => {
     try {
-      const res = await fetch("http://localhost:8080/feedback");
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/feedback`);
       if (res.ok) {
         const data = await res.json();
         const myFeedback = data.filter(f => f.role === 'faculty' && f.faculty === (localStorage.getItem("name") || "Faculty"));
@@ -1340,7 +1340,7 @@ function Faculty() {
       return;
     }
     try {
-      const res = await fetch("http://localhost:8080/feedback", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/feedback`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

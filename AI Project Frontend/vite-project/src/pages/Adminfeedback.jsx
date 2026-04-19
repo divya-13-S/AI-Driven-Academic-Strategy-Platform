@@ -7,7 +7,7 @@ function AdminFeedback() {
   const [sortBy, setSortBy] = useState("latest");
 
   useEffect(() => {
-    fetch("http://localhost:8080/feedback")
+    fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/feedback`)
       .then(res => res.json())
       .then(data => setFeedbacks(data))
       .catch(err => console.log(err));

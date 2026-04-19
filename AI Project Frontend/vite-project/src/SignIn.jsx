@@ -9,7 +9,7 @@ export default function SignIn() {
     e.preventDefault();
 
     try{
-        const response = await axios.post("http://localhost:8080/Login",{
+        const response = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/Login`,{
             email,
             password,
         });

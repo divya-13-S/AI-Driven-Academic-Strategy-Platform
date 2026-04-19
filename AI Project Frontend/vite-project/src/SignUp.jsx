@@ -12,7 +12,7 @@ export default function SignUp() {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:8080/signup", {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/signup`, {
         fullName,
         email,
         password,

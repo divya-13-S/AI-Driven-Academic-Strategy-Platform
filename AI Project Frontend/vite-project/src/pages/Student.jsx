@@ -51,7 +51,7 @@ function Student() {
   const fetchSubjects = async () => {
     const userId = localStorage.getItem("userId");
     try {
-      const res = await fetch(`http://localhost:8080/subject/${userId}`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/subject/${userId}`);
       if (res.ok) {
         setSubjects(await res.json());
       }
@@ -62,7 +62,7 @@ function Student() {
 
   const fetchGlobalSubjects = async () => {
     try {
-      const res = await fetch("http://localhost:8080/admin/subjects-overview");
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/admin/subjects-overview`);
       if (res.ok) {
         setGlobalSubjects(await res.json());
       }
@@ -73,7 +73,7 @@ function Student() {
 
   const fetchAnnouncements = async () => {
     try {
-      const res = await fetch("http://localhost:8080/announcements?target=student");
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/announcements?target=student`);
       if (res.ok) {
         setAnnouncements(await res.json());
       }
@@ -85,7 +85,7 @@ function Student() {
   const fetchCompletionData = async () => {
     const userId = localStorage.getItem("userId");
     try {
-      const res = await fetch(`http://localhost:8080/completion/${userId}`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/completion/${userId}`);
       if (res.ok) {
         setCompletedUnits(await res.json());
       }
@@ -97,7 +97,7 @@ function Student() {
   const handleMarkCompleted = async (subject, topic) => {
     const userId = localStorage.getItem("userId");
     try {
-      const res = await fetch("http://localhost:8080/completion", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/completion`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, subject, topic })
@@ -120,7 +120,7 @@ function Student() {
 
       setLoadingTopics(true);
       try {
-        const res = await fetch(`http://localhost:8080/topics/${form.name}`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/topics/${form.name}`);
         const data = await res.json();
         setAvailableTopics(data.topics || []);
       } catch (err) {
@@ -136,7 +136,7 @@ function Student() {
 
   const fetchExamSchedule = async () => {
     try {
-      const res = await fetch("http://localhost:8080/exams");
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/exams`);
       if (res.ok) {
         const data = await res.json();
         // Filter exams for student's enrolled subjects
@@ -151,7 +151,7 @@ function Student() {
   const fetchFeedbackHistory = async () => {
     const studentName = localStorage.getItem("name");
     try {
-      const res = await fetch("http://localhost:8080/feedback");
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/feedback`);
       if (res.ok) {
         const data = await res.json();
         setViewFeedbackHistory(data.filter(f => f.studentName === studentName));
@@ -189,7 +189,7 @@ function Student() {
 
       setLoadingMarksTopics(true);
       try {
-        const res = await fetch(`http://localhost:8080/topics/${selectedMarksSubject}`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/topics/${selectedMarksSubject}`);
         if (res.ok) {
           const data = await res.json();
           setSelectedMarksTopics(data.topics || []);
@@ -220,7 +220,7 @@ function Student() {
     e.preventDefault();
     const studentName = localStorage.getItem("name");
     try {
-      const res = await fetch("http://localhost:8080/feedback", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/feedback`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -247,7 +247,7 @@ function Student() {
     }
     const userId = localStorage.getItem("userId");
     try {
-      await fetch("http://localhost:8080/subject", {
+      await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/subject`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -269,7 +269,7 @@ function Student() {
   const handleMarkAsRead = async (annId) => {
     const userId = localStorage.getItem("userId");
     try {
-      const res = await fetch(`http://localhost:8080/announcements/${annId}/read`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/announcements/${annId}/read`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId })
@@ -288,7 +288,7 @@ function Student() {
 
   const handleDeleteAnnouncement = async (annId) => {
     try {
-      const res = await fetch(`http://localhost:8080/announcements/${annId}`, { 
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/announcements/${annId}`, { 
         method: "DELETE" 
       });
       if (res.ok) {
@@ -498,7 +498,7 @@ function Student() {
     setLoadingUnits(true);
     try {
       // Fetch materials for this subject
-      const res = await fetch(`http://localhost:8080/materials/subject/${subjectName}`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/materials/subject/${subjectName}`);
       if (res.ok) {
         const data = await res.json();
         setSubjectUnits(data || []);
@@ -515,7 +515,7 @@ function Student() {
     setUnitMaterials(null);
     setLoadingMaterials(true);
     try {
-      const url = `http://localhost:8080/materials?subject=${encodeURIComponent(subject)}&topic=${encodeURIComponent(topic)}`;
+      const url = `${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/materials?subject=${encodeURIComponent(subject)}&topic=${encodeURIComponent(topic)}`;
       console.log('Fetching from URL:', url);
       const res = await fetch(url);
       console.log('Response status:', res.status);

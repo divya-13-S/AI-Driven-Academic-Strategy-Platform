@@ -24,7 +24,7 @@ function FacultyMaterials() {
       try {
         // First, fetch all topics (default + custom)
         console.log("📚 Fetching topics for subject:", subject);
-        const topicsRes = await fetch(`http://localhost:8080/topics/${subject}`);
+        const topicsRes = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/topics/${subject}`);
         const topicsData = await topicsRes.json();
         const allTopics = topicsData.topics || [];
         
@@ -36,7 +36,7 @@ function FacultyMaterials() {
 
         for (const topic of allTopics) {
           try {
-            const res = await fetch(`http://localhost:8080/materials?subject=${subject}&topic=${topic}`);
+            const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/materials?subject=${subject}&topic=${topic}`);
             const data = await res.json();
             if (!data.message) {
               materialData[topic] = data;

@@ -92,7 +92,7 @@ function AISuggestions({ userId }) {
   useEffect(() => {
     const fetchAISuggestions = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/suggestions/${userId}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/suggestions/${userId}`);
         if (response.ok) {
           const result = await response.json();
           console.log("AI Suggestions Response:", result);

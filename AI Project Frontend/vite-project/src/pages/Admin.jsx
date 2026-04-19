@@ -52,7 +52,7 @@ function Admin() {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch("http://localhost:8080/users");
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/users`);
       const data = await res.json();
       setUsers(data);
     } catch (err) {
@@ -62,7 +62,7 @@ function Admin() {
 
   const fetchSubjectsOverview = async () => {
     try {
-      const res = await fetch("http://localhost:8080/admin/subjects-overview");
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/admin/subjects-overview`);
       if (res.ok) {
         setSubjectsOverview(await res.json());
       }
@@ -73,7 +73,7 @@ function Admin() {
 
   const fetchUnitsOverview = async () => {
     try {
-      const res = await fetch("http://localhost:8080/admin/units-overview");
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/admin/units-overview`);
       if (res.ok) {
         setUnitsOverview(await res.json());
       }
@@ -84,7 +84,7 @@ function Admin() {
 
   const fetchFeedbacks = async () => {
     try {
-      const res = await fetch("http://localhost:8080/feedback");
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/feedback`);
       if (res.ok) {
         setAdminFeedbacks(await res.json());
       }
@@ -95,7 +95,7 @@ function Admin() {
 
   const fetchAnnouncements = async () => {
     try {
-      const res = await fetch("http://localhost:8080/announcements");
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/announcements`);
       if (res.ok) {
         setAdminAnnouncements(await res.json());
       }
@@ -166,7 +166,7 @@ function Admin() {
   const handleToggleStatus = async (userId, currentStatus) => {
     try {
       const newStatus = (currentStatus || "Active") === "Active" ? "Deactivated" : "Active";
-      const res = await fetch(`http://localhost:8080/users/${userId}/status`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/users/${userId}/status`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus })
@@ -182,7 +182,7 @@ function Admin() {
   const handleDeleteUser = async (userId) => {
     if (!window.confirm("Are you sure you want to completely remove this user record? This cannot be undone.")) return;
     try {
-      const res = await fetch(`http://localhost:8080/users/${userId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/users/${userId}`, {
         method: "DELETE"
       });
       if (res.ok) {
@@ -199,7 +199,7 @@ function Admin() {
 
   const handleDeleteUnit = async (unitId, unitName, subjectName) => {
     try {
-      const res = await fetch(`http://localhost:8080/admin/units/delete-unit`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/admin/units/delete-unit`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ subjectName, unitName })
@@ -216,7 +216,7 @@ function Admin() {
 
   const handleEditUnit = async (unit) => {
     try {
-      const res = await fetch(`http://localhost:8080/materials?subject=${encodeURIComponent(unit.subjectName)}&topic=${encodeURIComponent(unit.unitName)}`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/materials?subject=${encodeURIComponent(unit.subjectName)}&topic=${encodeURIComponent(unit.unitName)}`);
       if (res.ok) {
         const data = await res.json();
         setMaterialForm({
@@ -236,7 +236,7 @@ function Admin() {
 
   const handleSaveMaterial = async () => {
     try {
-      const res = await fetch("http://localhost:8080/materials", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/materials`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -258,7 +258,7 @@ function Admin() {
 
   const handleResolveFeedback = async (id) => {
     try {
-      const res = await fetch(`http://localhost:8080/feedback/${id}/resolve`, { method: "PUT" });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/feedback/${id}/resolve`, { method: "PUT" });
       if (res.ok) {
         const { feedback } = await res.json();
         setAdminFeedbacks(adminFeedbacks.map(f => f._id === id ? { ...f, status: feedback.status } : f));
@@ -274,7 +274,7 @@ function Admin() {
 
   const handleDeleteFeedback = async (id) => {
     try {
-      const res = await fetch(`http://localhost:8080/feedback/${id}`, { method: "DELETE" });
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/feedback/${id}`, { method: "DELETE" });
       if (res.ok) {
         setAdminFeedbacks(adminFeedbacks.filter(f => f._id !== id));
       }
@@ -290,7 +290,7 @@ function Admin() {
     }
     setIsSendingAnnouncement(true);
     try {
-      const res = await fetch("http://localhost:8080/announcements", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/announcements`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...announcementForm, creatorRole: "admin" })
@@ -311,7 +311,7 @@ function Admin() {
   const handleDeleteAnnouncement = async (id) => {
     if (!window.confirm("Are you sure you want to delete this message?")) return;
     try {
-      const res = await fetch(`http://localhost:8080/announcements/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/announcements/${id}`, {
         method: "DELETE"
       });
       if (res.ok) {

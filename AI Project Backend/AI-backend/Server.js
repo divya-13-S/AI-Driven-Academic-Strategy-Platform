@@ -22,7 +22,7 @@ app.use(cors());
 console.log("SERVER FILE LOADED");
 
 
-mongoose.connect("mongodb://localhost:27017/AIuser").then(() => {
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/AIuser").then(() => {
   console.log("mongoose connected");
 }).catch((error) => {
   console.log("error");

@@ -7,7 +7,7 @@ function Subjectdetails({ subject, goBack }) {
 
   // Fetch material
   useEffect(() => {
-    fetch(`http://localhost:8080/materials?subject=${subject.name}&topic=${subject.title}`)
+    fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/materials?subject=${subject.name}&topic=${subject.title}`)
       .then(res => res.json())
       .then(data => {
         if (!data.message) {
