@@ -22,8 +22,8 @@ app.use(cors());
 console.log("SERVER FILE LOADED");
 
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/AIuser").then(() => {
-  console.log("mongoose connected");
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/AIuser", { dbName: "AIuser" }).then(() => {
+  console.log("mongoose connected to AIuser database");
 }).catch((error) => {
   console.log("error");
 })
